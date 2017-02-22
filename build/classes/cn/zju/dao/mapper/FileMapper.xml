@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+     <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+     "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+     
+ <mapper namespace="cn.zju.dao.mapper.FileMapper">
+ 
+    <!-- 分页查找所有和搜索文字匹配的文件  -->
+    <select id="getAllFiles" parameterType="cn.zju.action.SearchFileAction" resultType="cn.zju.dao.po.File" >
+       SELECT * FROM file WHERE canshare=1 AND filename LIKE '%${searchcontent}%' LIMIT #{startindex},#{pagesize}   
+    </select>
+    
+     <!-- 分页查找某个用户所有的文件  -->
+    <select id="getUserFiles" parameterType="cn.zju.action.SearchUserFileAction" resultType="cn.zju.dao.po.File" >
+       SELECT * FROM file WHERE filepath=#{filepath} LIMIT #{startindex},#{pagesize}   
+    </select>
+    
+    <!-- 统计一个用户一共多少文件 -->
+    <select id="countUserFiles" parameterType="cn.zju.action.SearchUserFileAction" resultType="int">
+       SELECT COUNT(id) totalrecord FROM file WHERE filepath=#{filepath}     
+    </select>
+    
+    <!-- 和搜索内容匹配的所有的共享的文件总数 -->
+    <select id="count" parameterType="cn.zju.action.SearchFileAction" resultType="int">
+       SELECT COUNT(id) totalrecord FROM file WHERE canshare=1 AND filename LIKE '%${searchcontent}%'         
+    </select>
+    
+    <!-- 根据文件id查找文件路径 -->
+    <select id="findFilepathById" parameterType="int" resultType="java.lang.String">
+       SELECT file.filepath FROM file WHERE id=#{value}
+    </select>
+    
+    <!-- 把用户上传的文件信息写入数据库-->
+    <insert id="insertFile" parameterType="cn.zju.dao.po.File">
+       INSERT INTO icloud.file (filename,filepath,filesize,createtime,canshare) 
+       VALUES(#{filename},#{filepath},#{filesize},#{createtime},#{canshare})
+    </insert>
+    
+ </mapper>
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 

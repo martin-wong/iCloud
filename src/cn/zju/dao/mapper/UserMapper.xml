@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+ <!DOCTYPE mapper
+     PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+     "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ <mapper namespace="cn.zju.dao.mapper.UserMapper" >
+ 
+     <select id="checkUser" parameterType="cn.zju.dao.po.User" resultType="java.lang.String" >
+        SELECT user.username FROM user WHERE username=#{username} AND password=#{password}
+     </select>
+     
+     <select id="findUser" parameterType="java.lang.String" resultType="java.lang.Integer" >
+        SELECT user.id FROM user WHERE username=#{username}
+     </select>
+ 
+     <insert id="createUser" parameterType="cn.zju.dao.po.User" >
+		<selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
+			SELECT LAST_INSERT_ID()
+		</selectKey> 
+		INSERT INTO user(username,password,isvip) VALUES(#{username},#{password},#{isvip})
+     </insert>
+     
+ </mapper>
