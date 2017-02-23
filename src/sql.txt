@@ -1,0 +1,25 @@
+
+CREAT DATABASE `icloud`
+
+USE `icloud`
+
+CREATE TABLE `file` (
+  `id` int(10) unsigned NOT NULL auto_increment,
+  `filename` varchar(255) NOT NULL COMMENT '文件名',
+  `filepath` varchar(600) NOT NULL COMMENT '文件路径',
+  `filesize` varchar(255) NOT NULL COMMENT '文件大小',
+  `createtime` date default NULL COMMENT '创建日期',
+  `canshare` int(2) NOT NULL COMMENT '0表示私有 1表示共享',
+  PRIMARY KEY  (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8
+
+
+
+CREATE TABLE `user` (
+  `id` int(11) unsigned NOT NULL auto_increment,
+  `username` varchar(255) NOT NULL,
+  `password` varchar(16) NOT NULL,
+  `comment` varchar(255) default NULL COMMENT '注释',
+  `isvip` int(11) NOT NULL COMMENT '1是vip 0不是',
+  PRIMARY KEY  (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8
