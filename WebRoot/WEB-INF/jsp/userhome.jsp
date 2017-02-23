@@ -12,15 +12,16 @@
    <div>
      <a href="${pageContext.request.contextPath}/requestout.action" >log out</a> &nbsp;
      <a href="${pageContext.request.contextPath}/index.jsp" >首页</a> &nbsp;
-     <a href="${pageContext.request.contextPath}/help.jsp">帮助</a> 
+     <a href="${pageContext.request.contextPath}/help.jsp">帮助</a> &nbsp;
+     <a href="${pageContext.request.contextPath}/shutdown.action" >远程关机</a> 
   </div>
   
-  <div style="font-size: 20px ; text-align: center">欢迎你登陆iCloud<div style="font-size: 30px; color: green;font-style: oblique;">${user_name}</div></div>
+  <div style="font-size: 24px ; text-align: center">欢迎你登陆iCloud <div style="font-size: 20px; color: green;font-style: oblique; float:inherit; ">${user_name}</div></div>
   
   <hr color="blue" size="2"/><br/>
   
    <form action="${pageContext.request.contextPath}/upload.action" method="post" enctype="multipart/form-data">
-        <input type="submit" value="上传" style="background: white;"/>
+        <input type="submit" value="上传文件" style="background: white;"/>
     	<input type="file" name="file"/><br/>
     	<input type="hidden" name="username" value="${user_name}" /><br/>
     	${message }
@@ -42,7 +43,6 @@
    <div style="font-size: 30px ; color: blue ; font-style: italic;"><font>Your Files In iCloud</font></div>
    
    <br/>
-    
     <table frame="border" width="100%" align="center">
     	<tr >
     		<td>文件名</td>
@@ -50,6 +50,7 @@
     		<td>上传日期</td>
     		<td>下载文件</td>
     		<td>是否共享</td>
+    		<td>操作</td>
     	<tr>
     	
     	<c:forEach var="c" items="${requestScope.pagebean.list}" varStatus="stat">
@@ -61,10 +62,10 @@
 	    			<a href="${pageContext.request.contextPath}/download.action?id=${c.id }&filename=${c.filename }">下载</a>
 	    		</td>
 	    		<td>
-                    <form action="${pageContext.request.contextPath}/canshare.action" method="post">
-	    		      <select name="canshare" >
+	    		<form>
+	    		      <select  id="${c.id}" onchange="gochange(${pagebean.currentpage},${c.id})" >
 	    		         <c:if test="${c.canshare==0 }">
-    					         <option value="0" selected="selected">私有</option> 
+    					         <option value="0">私有</option> 
     					         <option value="1" >共享</option> 
     					 </c:if>
 	    		         <c:if test="${c.canshare==1 }">
@@ -72,8 +73,10 @@
     					         <option value="0" >私有</option> 
  					     </c:if>
  					  </select>
- 					  <input type="submit" value="提交更改"/>
- 					</form>
+ 			    </form>
+	    		</td>
+	    		<td>
+                  <a href="javascript:void(0)" onclick="godelete(${pagebean.currentpage},${c.id})">删除文件</a>
 	    		</td>
     		<tr>
     	</c:forEach>
@@ -100,6 +103,40 @@
       
       
   <script type="text/javascript">
+      
+      function godelete(currentpage,fileid){
+    	  var pagesize = document.getElementById("pagesize").value;
+    	  
+    	  if(pagesize > 10 || pagesize >= ${pagebean.totalrecord - pagebean.pagesize * ( pagebean.currentpage - 1 )}){
+    		  pagesize = Math.min(pagesize,${pagebean.totalrecord});
+    		  currentpage = 1 ;
+    	  }else if(pagesize < 1){
+    		  pagesize = 1;
+    	  }
+    	  
+    	  var r=confirm("确认删除文件？");
+    	  if(r==true){
+        	  window.location.href = '${pageContext.request.contextPath}/deletefile.action?currentpage='+currentpage+'&pagesize='+ pagesize+'&id='+fileid;
+    	  }else{
+    		  return false;
+    	  }
+      }
+      
+      function gochange(currentpage,fileid){
+    	  
+    	  var canshare = document.getElementById(fileid).value;
+    	  var pagesize = document.getElementById("pagesize").value;
+    	  var r=confirm("如果设置共享，您的文件将可以被其他人搜索到");
+    	  if (r==true){
+        	  window.location.href = '${pageContext.request.contextPath}/changefilestatus.action?currentpage='+currentpage+'&pagesize='+ pagesize+'&id='+fileid+'&canshare='+canshare;
+    	  }else{
+    		  location.reload();
+    	  }
+      }
+      
+  </script>  
+      
+  <script type="text/javascript">
       function gotopage(currentpage){
     	  
     	  var pagesize = document.getElementById("pagesize").value;
@@ -110,8 +147,8 @@
     	  }else if(pagesize < 1){
     		  pagesize = 1;
     	  }
-    	  
     	  window.location.href = '${pageContext.request.contextPath}/searchUserfile.action?currentpage='+currentpage+'&pagesize='+ pagesize;
+    	  
       }
   
       function gotopage1(currentpage){
@@ -129,6 +166,7 @@
     	  window.location.href = '${pageContext.request.contextPath}/searchUserfile.action?currentpage='+currentpage+'&pagesize='+ pagesize;
       }
   </script>
+  
   </div>
   
   

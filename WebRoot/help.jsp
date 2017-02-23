@@ -12,12 +12,12 @@
    
    <br/><br/>
    
-   <font style="font-size: 30px;"> 怎样才能上传文件？</font><br/>
-   <font style="font-size: 25px; background-color: red">注册并登陆后即可上传文件</font><br/><br/>
+   <font style="font-size: 30px;"> 如何上传或者下载文件？</font><br/>
+   <font style="font-size: 25px; background-color: silver">任何人均可以下载他人共享的文件，如果想上传文件，您必须先注册并登陆</font><br/><br/>
    <font style="font-size: 30px;"> 上传的文件会被别人看到并下载吗？</font><br/>
-   <font style="font-size: 25px; background-color: red">您可以自由设置上传的文件为共享或私有</font><br/>
+   <font style="font-size: 25px; background-color: silver">您上传的文件默认是私有的，上传之后您可以选择共享哪些文件</font><br/>
    <font style="font-size: 30px;"> 忘记密码怎么办？</font><br/>
-   <font style="font-size: 25px; background-color: red">您可以发email至1101875387@qq.com询问</font><br/>
+   <font style="font-size: 25px; background-color: silver;">您可以发email至1101875387@qq.com询问</font><br/>
    
 </body>
 </html>

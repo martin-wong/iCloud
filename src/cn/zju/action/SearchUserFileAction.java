@@ -56,7 +56,9 @@ public class SearchUserFileAction extends ActionSupport implements Serializable{
 		
 	@Override
 	public String execute() throws Exception  {
-		
+		System.out.println(currentpage);
+		System.out.println(pagesize);
+		//根据用户查找出它所有的文件
 		List<File> list;
 		try {
 			this.filepath = (String) ActionContext.getContext().getSession().get("user_name");

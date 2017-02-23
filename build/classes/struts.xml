@@ -62,5 +62,19 @@
 				<result name="error">/message.jsp</result>
 			</action>
 			
+			<action name="changefilestatus" class="cn.zju.action.ChangeFileStatusAction" method="changeFileStatus">
+			    <result type="chain" name="success">searchUserfile</result>
+			    <result name="input">/message.jsp</result>
+			</action>
+			
+			<action name="deletefile" class="cn.zju.action.DeleteFileAction" method="deleteFile">
+			    <result type="chain" name="success">searchUserfile</result>
+			    <result name="error">/message.jsp</result>
+			</action>
+			
+			<action name="shutdown" class="cn.zju.action.ShutDown">
+			    <result name="success">/index.jsp</result>
+			</action>
+			
 	</package>
 </struts>

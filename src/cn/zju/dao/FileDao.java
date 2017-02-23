@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.apache.ibatis.session.SqlSession;
 
+import cn.zju.action.ChangeFileStatusAction;
 import cn.zju.action.SearchFileAction;
 import cn.zju.action.SearchUserFileAction;
 import cn.zju.dao.mapper.FileMapper;
@@ -60,5 +61,29 @@ public class FileDao {
 		int count = mapper.countUserFiles(action);
 		session.close();
 		return count;
+	}
+
+	public void updateFileById(ChangeFileStatusAction changeFileStatusAction) throws Exception{
+		SqlSession session = DaoUtil.getSqlSession();
+		FileMapper mapper = session.getMapper(FileMapper.class);
+		mapper.updateFileById(changeFileStatusAction);
+		session.commit();
+		session.close();
+	}
+
+	public void deleteFileById(int id) {
+		SqlSession session = DaoUtil.getSqlSession();
+		FileMapper mapper = session.getMapper(FileMapper.class);
+		mapper.deleteFileById(id);
+		session.commit();
+		session.close();
+	}
+
+	public String findFilenameById(int id) {
+		SqlSession session = DaoUtil.getSqlSession();
+		FileMapper mapper = session.getMapper(FileMapper.class);
+		String filename = mapper.findFilenameById(id);
+		session.close();
+	    return filename;
 	}
 }

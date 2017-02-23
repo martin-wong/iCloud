@@ -4,9 +4,22 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>test</title>
+<title>error</title>
 </head>
 <body>
-   
+	<script type="text/javascript">
+		var time = 5; //时间,秒
+		function Redirect() {
+		    window.location = "${pageContext.request.contextPath}/index.jsp";
+		}
+		var i = 0;
+		function dis() {
+		    document.all.s.innerHTML = "****** 错误信息： ${globalmessage} ******   " + (time - i) + "秒后自动跳往主页";
+		    i++;
+		}
+		timer = setInterval('dis()', 1000); //显示时间
+		timer = setTimeout('Redirect()', time * 1000); //跳转
+	</script>
+      <span id="s"></span>
 </body>
 </html>

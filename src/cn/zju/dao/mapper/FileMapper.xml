@@ -29,11 +29,24 @@
        SELECT file.filepath FROM file WHERE id=#{value}
     </select>
     
+     <!-- 根据文件id查找文件名 -->
+    <select id="findFilenameById" parameterType="int" resultType="java.lang.String">
+       SELECT file.filename FROM file WHERE id=#{value}
+    </select>
+    
     <!-- 把用户上传的文件信息写入数据库-->
     <insert id="insertFile" parameterType="cn.zju.dao.po.File">
        INSERT INTO icloud.file (filename,filepath,filesize,createtime,canshare) 
        VALUES(#{filename},#{filepath},#{filesize},#{createtime},#{canshare})
     </insert>
+    <!-- 根据文件id更新文件是否共享的标记 -->
+    <update id="updateFileById" parameterType="cn.zju.action.ChangeFileStatusAction">
+        UPDATE FILE SET canshare=#{canshare} WHERE id=#{id}
+    </update>
+    <!-- 根据文件id删除文件记录 -->
+    <delete id="deleteFileById" parameterType="int">
+        DELETE FROM FILE WHERE id=#{value}
+    </delete>
     
  </mapper>
  

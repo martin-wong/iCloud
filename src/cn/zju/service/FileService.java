@@ -2,6 +2,7 @@ package cn.zju.service;
 
 import java.util.List;
 
+import cn.zju.action.ChangeFileStatusAction;
 import cn.zju.action.SearchFileAction;
 import cn.zju.action.SearchUserFileAction;
 import cn.zju.dao.FileDao;
@@ -34,5 +35,17 @@ public class FileService {
 	public static int countUserFiles(SearchUserFileAction action) throws Exception {
 		return dao.countUserFiles(action);
 		
+	}
+
+	public static void updateFileById(ChangeFileStatusAction changeFileStatusAction) throws Exception{
+		 dao.updateFileById(changeFileStatusAction);
+	}
+
+	public static void deleteFileById(int id) {
+		dao.deleteFileById(id);
+	}
+
+	public static String findFilenameById(int id) {
+		return dao.findFilenameById(id);
 	}
 }

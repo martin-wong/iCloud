@@ -83,7 +83,7 @@ public class UploadAction extends ActionSupport implements Serializable{
 			ServletActionContext.getRequest().setAttribute("message", "上传成功！");
 			return SUCCESS;
 		} catch (Exception e) {
-			ServletActionContext.getRequest().setAttribute("message", "未知错误，请重试！");
+			ServletActionContext.getRequest().setAttribute("message", "请先选择文件！");
 			return SUCCESS;
 		}
 	}
