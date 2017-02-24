@@ -24,8 +24,8 @@ public class FileService {
 		return dao.findFilepathById(id);
 	}
 	
-	public static void insertFile(File file) throws Exception{
-		dao.insertFile(file);
+	public static Integer insertFile(File file) throws Exception{
+		return dao.insertFile(file);
 	}
 
 	public static List<File> getUserFiles(SearchUserFileAction action) throws Exception {
@@ -48,4 +48,5 @@ public class FileService {
 	public static String findFilenameById(int id) {
 		return dao.findFilenameById(id);
 	}
+
 }

@@ -35,7 +35,10 @@
     </select>
     
     <!-- 把用户上传的文件信息写入数据库-->
-    <insert id="insertFile" parameterType="cn.zju.dao.po.File">
+    <insert id="insertFile" parameterType="cn.zju.dao.po.File" >
+       <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
+			SELECT LAST_INSERT_ID()
+	   </selectKey> 
        INSERT INTO icloud.file (filename,filepath,filesize,createtime,canshare) 
        VALUES(#{filename},#{filepath},#{filesize},#{createtime},#{canshare})
     </insert>

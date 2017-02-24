@@ -38,12 +38,13 @@ public class FileDao {
 		   return filepath;
 	}
 	//上传的文件信息添加到数据库的表file
-	public void insertFile(File file)throws Exception{
+	public Integer insertFile(File file)throws Exception{
 		   SqlSession session = DaoUtil.getSqlSession();
 		   FileMapper mapper = session.getMapper(FileMapper.class);
-		   mapper.insertFile(file);
+		   Integer fileid = mapper.insertFile(file);
 		   session.commit();
 		   session.close();
+		   return fileid;
 	}
 	//根据用户名得用户的文件
 	public List<File> getUserFiles(SearchUserFileAction action) throws Exception{

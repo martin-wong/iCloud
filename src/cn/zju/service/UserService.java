@@ -21,4 +21,8 @@ public class UserService {
 	public static boolean findUser(String username) throws Exception{
 		return dao.findUser(username);
 	}
+
+	public static int isVip(String user_name)throws Exception {
+		return dao.isVip(user_name);
+	}
 }

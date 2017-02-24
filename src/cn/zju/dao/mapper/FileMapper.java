@@ -12,7 +12,7 @@ public interface FileMapper {
 	public List<File> getAllFiles(SearchFileAction searchFileAction) throws Exception;
 	public int count(SearchFileAction searchFileAction) throws Exception;
 	public String findFilepathById(int id) throws Exception;
-	public void insertFile(File file) throws Exception;
+	public Integer insertFile(File file) throws Exception;
 	public List<File> getUserFiles(SearchUserFileAction action)throws Exception;
 	public int countUserFiles(SearchUserFileAction action) throws Exception;
 	public void updateFileById(ChangeFileStatusAction changeFileStatusAction) throws Exception;

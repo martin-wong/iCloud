@@ -8,7 +8,7 @@
 <title>我的iCloud</title>
 </head>
 <body>
-  
+		
    <div>
      <a href="${pageContext.request.contextPath}/requestout.action" >log out</a> &nbsp;
      <a href="${pageContext.request.contextPath}/index.jsp" >首页</a> &nbsp;
@@ -21,9 +21,10 @@
   <hr color="blue" size="2"/><br/>
   
    <form action="${pageContext.request.contextPath}/upload.action" method="post" enctype="multipart/form-data">
-        <input type="submit" value="上传文件" style="background: white;"/>
-    	<input type="file" name="file"/><br/>
+        <input type="submit" onclick="return checkfile()" value="上传文件" style="background: white;"/>
+    	<input type="file" onchange="checkfile()" id="fileupload" name="file" onpropertychange="getFileSize(this.value)"/><br/>
     	<input type="hidden" name="username" value="${user_name}" /><br/>
+        <img id="tempimg" dynsrc="" src="" style="display:none" />  
     	${message }
   </form>
   <br/>
@@ -167,22 +168,69 @@
       }
   </script>
   
+    <script type="text/javascript">
+        var vipmaxsize = 50*1024*1024 ;
+        var normalmaxsize = 20*1024*1024 ;
+        var viperrMsg = "VIP用户上传的附件文件不能超过50M！！！";
+        var normalerrMsg = "普通用户上传的附件文件不能超过20M！！！";
+        var tipMsg = "建议使用chrome firefox ie等浏览器";  
+        var  browserCfg = {};
+        //下面一段鉴别使用者的浏览器
+        var ua = window.navigator.userAgent;
+        if (ua.indexOf("MSIE")>=1){
+            browserCfg.ie = true;
+        }else if(ua.indexOf("Firefox")>=1){  
+            browserCfg.firefox = true;  
+        }else if(ua.indexOf("Chrome")>=1){  
+            browserCfg.chrome = true;  
+        }  
+        function checkfile(){  
+            try{  
+                var obj_file = document.getElementById("fileupload"); 
+                var isvip = ${isvip};
+                if(obj_file.value==""){  
+                    alert("请先选择上传文件");  
+                    return;  
+               } 
+                var filesize = 0;  
+                if(browserCfg.firefox || browserCfg.chrome ){  
+                    filesize = obj_file.files[0].size;  //chrome等浏览器支持这个方法拿到文件大小
+                }else if(browserCfg.ie){  
+                    var obj_img = document.getElementById('tempimg');  
+                    obj_img.dynsrc=obj_file.value;  
+                    filesize = obj_img.fileSize;  
+                }else{  
+                    alert(tipMsg);  
+                return false;  
+                }  
+                if(filesize==-1){  
+                    alert(tipMsg);  
+                    return false;  
+                }else if(isvip==1 && filesize>vipmaxsize){  
+                    alert(viperrMsg);  
+                    return false;  
+                }else if(isvip==0 && filesize>normalmaxsize){
+                    alert(normalerrMsg);  
+                    return false;  
+                }else{  
+                    return true;  
+                }  
+            }catch(e){  
+                alert(e); 
+                return false; 
+            } 
+           }
+  </script>
+  
   </div>
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
   
 </body>
 </html>
+
+
+
+
+		
+		
+		
+

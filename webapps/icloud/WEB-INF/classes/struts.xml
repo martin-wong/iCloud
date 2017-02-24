@@ -4,7 +4,7 @@
             "http://struts.apache.org/dtds/struts-2.1.7.dtd">
 <struts>
     <constant name="struts.devMode" value="true"></constant>
-    <constant name="struts.multipart.maxSize" value="100000000"></constant>
+    <constant name="struts.multipart.maxSize" value="10000000000000"></constant>
     
 	<package name="icloud" namespace="/" extends="struts-default">
 	

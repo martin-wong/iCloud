@@ -31,5 +31,14 @@ public class UserDao {
 		if(found==null || found<1)  return false;
 		return true;
 	}
+	public int isVip(String user_name) throws Exception{
+		SqlSession session = DaoUtil.getSqlSession();
+		UserMapper mapper = session.getMapper(UserMapper.class);
+		Integer isvip = mapper.isVip(user_name);
+		session.close();
+		if(isvip==null || isvip == 0)  return 0;
+		else return 1;
+	
+	}
 	
 }

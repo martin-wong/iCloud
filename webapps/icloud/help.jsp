@@ -17,7 +17,9 @@
    <font style="font-size: 30px;"> 上传的文件会被别人看到并下载吗？</font><br/>
    <font style="font-size: 25px; background-color: silver">您上传的文件默认是私有的，上传之后您可以选择共享哪些文件</font><br/>
    <font style="font-size: 30px;"> 忘记密码怎么办？</font><br/>
-   <font style="font-size: 25px; background-color: silver;">您可以发email至1101875387@qq.com询问</font><br/>
+   <font style="font-size: 25px; background-color: silver;">您可以发email至1101875387@qq.com询问，后续会开通密码找回功能</font><br/>
+   <font style="font-size: 30px;"> 上传文件有什么限制吗？</font><br/>
+   <font style="font-size: 25px; background-color: silver;">普通用户单次上传文件不能超过20Mb，VIP用户不能超过50Mb</font><br/>
    
 </body>
 </html>
