@@ -4,6 +4,8 @@ import java.io.Serializable;
 import java.util.List;
 
 import org.apache.struts2.ServletActionContext;
+import org.springframework.web.context.WebApplicationContext;
+import org.springframework.web.context.support.WebApplicationContextUtils;
 
 import cn.zju.dao.po.File;
 import cn.zju.dao.po.PageBean;
@@ -57,9 +59,11 @@ public class SearchUserFileAction extends ActionSupport implements Serializable{
 		
 	@Override
 	public String execute() throws Exception  {
-		System.out.println(currentpage);
-		System.out.println(pagesize);
 		//根据用户查找出它所有的文件
+		WebApplicationContext applicationContext = WebApplicationContextUtils.getWebApplicationContext(ServletActionContext.getRequest().getServletContext());
+		FileService fileService = (FileService) applicationContext.getBean("fileService");
+		UserService userService = (UserService) applicationContext.getBean("userService");
+		
 		List<File> list;
 		try {
 			String username = (String) ActionContext.getContext().getSession().get("user_name");
@@ -68,22 +72,22 @@ public class SearchUserFileAction extends ActionSupport implements Serializable{
 				return INPUT;
 			}
 			this.filepath = username;
-			list = FileService.getUserFiles(this);
+			list = fileService.getUserFiles(this);
 		} catch (Exception e) {
 			e.printStackTrace();
 			return INPUT;
 		} 
 		Integer isvip = (Integer) ServletActionContext.getRequest().getAttribute("isvip");
 		if(isvip==null){  //没有上传文件之前会调用到这里的代码，上传的时候在uploadAction里会添加isvip
-		   isvip = UserService.isVip(this.filepath);
+		   isvip = userService.isVip(this.filepath);
            ServletActionContext.getRequest().setAttribute("isvip", isvip);   
 		}
 		//拿到每页的数据，每个元素就是一条记录
-		PageBean pagebean = new PageBean();
+		PageBean pagebean = (PageBean) applicationContext.getBean("pageBean");
 		pagebean.setList(list);
 	    pagebean.setCurrentpage(currentpage);
 		pagebean.setPagesize(pagesize);
-		pagebean.setTotalrecord(FileService.countUserFiles(this));
+		pagebean.setTotalrecord(fileService.countUserFiles(this));
 		
 		ServletActionContext.getRequest().setAttribute("pagebean", pagebean);
 		

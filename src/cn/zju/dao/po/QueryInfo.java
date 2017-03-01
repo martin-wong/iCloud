@@ -1,5 +1,9 @@
 package cn.zju.dao.po;
 
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
+
+@Component("queryInfo")
 public class QueryInfo {
 	private int currentpage = 1; //用户想看的页(用户点击的那一页)，默认是第1页
 	private int pagesize = 3 ;   //每一个页面呈现几条数据，默认一页是5条数据

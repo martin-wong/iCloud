@@ -2,6 +2,10 @@ package cn.zju.dao.po;
 
 import java.util.List;
 
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
+
+@Component("pageBean")
 public class PageBean {
 	private List list;         //一页的所有记录
 	private int totalrecord;   //总共多少条记录

@@ -3,8 +3,11 @@ package cn.zju.action;
 import java.io.Serializable;
 
 import org.apache.struts2.ServletActionContext;
+import org.springframework.web.context.WebApplicationContext;
+import org.springframework.web.context.support.WebApplicationContextUtils;
 
 import cn.zju.service.FileService;
+import cn.zju.service.UserService;
 
 import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ActionSupport;
@@ -60,16 +63,16 @@ public class ChangeFileStatusAction extends ActionSupport implements Serializabl
 
 	//修改用户的某个文件的状态（共享/私有）
 	public String changeFileStatus(){
-		//把canshare修改进数据库
-		System.out.println(id);
-		System.out.println(canshare);
 		
+		//把canshare修改进数据库
 		try {
+			WebApplicationContext applicationContext = WebApplicationContextUtils.getWebApplicationContext(ServletActionContext.getRequest().getServletContext());
+			FileService service = (FileService) applicationContext.getBean("fileService");
 			//检查该文件是否属于该用户,否则不允许修改文件状态
-			String username = FileService.findFilepathById(id);
+			String username = service.findFilepathById(id);
 			String login_user = (String) ActionContext.getContext().getSession().get("user_name");
 			if(username!=null && login_user.equals(username) ){
-		    	FileService.updateFileById(this);
+				service.updateFileById(this);
 			}else{ //不通过，可能是人为篡改数据，转发至首页
 				ServletActionContext.getRequest().setAttribute("globalmessage", "该文件可能不属于你");
 				return INPUT;

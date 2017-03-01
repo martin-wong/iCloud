@@ -4,6 +4,8 @@ import java.io.File;
 import java.io.Serializable;
 
 import org.apache.struts2.ServletActionContext;
+import org.springframework.web.context.WebApplicationContext;
+import org.springframework.web.context.support.WebApplicationContextUtils;
 
 import cn.zju.service.FileService;
 
@@ -56,11 +58,13 @@ public class DeleteFileAction extends ActionSupport implements Serializable{
 	   
 	   //判断该用户是否拥有此文件
 	   try{
-		   String username = FileService.findFilepathById(id);
+		    WebApplicationContext applicationContext = WebApplicationContextUtils.getWebApplicationContext(ServletActionContext.getRequest().getServletContext());
+			FileService service = (FileService) applicationContext.getBean("fileService");
+		   String username = service.findFilepathById(id);
 		   String login_user = (String) ActionContext.getContext().getSession().get("user_name");
-		   String filename = FileService.findFilenameById(id); //查出文件名
+		   String filename = service.findFilenameById(id); //查出文件名
 		   if(username!=null && login_user.equals(username) ){
-			   FileService.deleteFileById(id); //删除数据库的该文件记录
+			   service.deleteFileById(id); //删除数据库的该文件记录
 			   //从硬盘上删除文件
 			   String storepath = new String("D:"+File.separator+"upload"+File.separator+login_user+File.separator);
 			   storepath = storepath+filename;

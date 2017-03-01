@@ -9,6 +9,8 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 
 import org.apache.struts2.ServletActionContext;
+import org.springframework.web.context.WebApplicationContext;
+import org.springframework.web.context.support.WebApplicationContextUtils;
 
 import cn.zju.service.FileService;
 
@@ -45,7 +47,10 @@ public class DownloadAction extends ActionSupport implements Serializable{
 		
 		FileInputStream in = null ;
 		try {
-			String path = FileService.findFilepathById(id); //相对于/upload的路径
+			WebApplicationContext applicationContext = WebApplicationContextUtils.getWebApplicationContext(ServletActionContext.getRequest().getServletContext());
+			FileService service = (FileService) applicationContext.getBean("fileService");
+			   
+			String path = service.findFilepathById(id); //相对于/upload的路径
 			if(path==null || "".equals(path)){
 			    ServletActionContext.getRequest().setAttribute("message", "对不起，您要下载的资源已被删除");
 			    return INPUT;

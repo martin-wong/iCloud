@@ -3,6 +3,8 @@ package cn.zju.action;
 import java.io.Serializable;
 
 import org.apache.struts2.ServletActionContext;
+import org.springframework.web.context.WebApplicationContext;
+import org.springframework.web.context.support.WebApplicationContextUtils;
 
 import cn.zju.dao.po.User;
 import cn.zju.service.UserService;
@@ -54,7 +56,9 @@ public class LoginAction extends ActionSupport implements Serializable{
 		user.setUsername(username);
 		user.setPassword(password);
 		try {
-			String user_name = UserService.checkUser(user);
+			WebApplicationContext applicationContext = WebApplicationContextUtils.getWebApplicationContext(ServletActionContext.getRequest().getServletContext());
+			UserService service = (UserService) applicationContext.getBean("userService");
+			String user_name = service.checkUser(user);
 			if( user_name != null && (!"".equals(user_name)) ){
 				//如果登陆成功 把用户名放到session域
 				ActionContext.getContext().getSession().put("user_name", user_name);

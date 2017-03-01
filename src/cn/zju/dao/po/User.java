@@ -1,5 +1,9 @@
 package cn.zju.dao.po;
 
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
+
+@Component("user")
 public class User  {
 	private int id;
 	private String password;

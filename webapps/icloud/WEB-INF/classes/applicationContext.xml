@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="
+http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd"> 
+  
+  <context:component-scan base-package="cn.zju.dao,cn.zju.service"></context:component-scan>  
+  <context:property-placeholder location="classpath:db.properties"/>
+  
+  <bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close">
+      <property name="driverClass" value="${jdbc.driver}" />
+      <property name="jdbcUrl" value="${jdbc.url}" />
+      <property name="user" value="${jdbc.username}" />
+      <property name="password" value="${jdbc.password}" />
+  </bean>
+  
+  <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+      <property name="dataSource" ref="dataSource" />
+      <property name="configLocation" value="classpath:SqlMapConfig.xml" />
+      <property name="mapperLocations" value="classpath:cn/zju/dao/mapper/*.xml" />
+  </bean>
+  
+  <!--扫描mapper接口，如果这个接口有对应的mapper.xml，就由spring自动生成实例  -->
+  <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">   
+      <!--<property name="sqlSessionFactory" ref="sqlSessionFactory" />会报错-->
+      <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory" />
+      <!--指定扫描的包-->
+      <property name="basePackage" value="cn.zju.dao.mapper" />  
+  </bean>
+
+</beans>
+
+
+
+
+
+

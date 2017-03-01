@@ -6,6 +6,8 @@ import java.io.Serializable;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.struts2.ServletActionContext;
+import org.springframework.web.context.WebApplicationContext;
+import org.springframework.web.context.support.WebApplicationContextUtils;
 
 import cn.zju.service.FileService;
 import cn.zju.service.UserService;
@@ -67,9 +69,12 @@ public class UploadAction extends ActionSupport implements Serializable{
 			 return SUCCESS;
 		
 		//从数据库查询该用户是否为vip 
+		WebApplicationContext applicationContext = WebApplicationContextUtils.getWebApplicationContext(ServletActionContext.getRequest().getServletContext());
+		UserService service = (UserService) applicationContext.getBean("userService");
+	    
 		Integer isvip = null;
 		try {
-			isvip = UserService.isVip(user_name);
+			isvip = service.isVip(user_name);
 			//把是否是vip的信息带到userhome主页，用于在客户端限制文件上传大小
 			ServletActionContext.getRequest().setAttribute("isvip", isvip);
 		} catch (Exception e) {
@@ -100,18 +105,19 @@ public class UploadAction extends ActionSupport implements Serializable{
 		
 		
 		//验证全部通过，把文件复制到本地硬盘的用户的目录下
+		FileService fileService = (FileService) applicationContext.getBean("fileService");
 		Integer fileid = null;
 		try {
 			FileUtils.copyFile(file,store);   //上传文件到本地硬盘
 			//把文件信息存入数据库
-			cn.zju.dao.po.File f = new cn.zju.dao.po.File();
+			cn.zju.dao.po.File f = (cn.zju.dao.po.File) applicationContext.getBean("file");
 			f.setCreatetime(new java.util.Date());
 			f.setFilename(fileFileName);
 			f.setFilepath(username);
 			f.setFilesize(String.valueOf(size/1024+1));
 			f.setCanshare(0);
 			
-		    fileid = FileService.insertFile(f);
+		    fileid = fileService.insertFile(f);
 			
 			ServletActionContext.getRequest().setAttribute("message", "上传成功！");
 			return SUCCESS;
@@ -121,7 +127,7 @@ public class UploadAction extends ActionSupport implements Serializable{
 				store.delete();
 			}
 			if(fileid!=null){
-				FileService.deleteFileById(fileid);
+				fileService.deleteFileById(fileid);
 			}
 			ServletActionContext.getRequest().setAttribute("message", "上传失败！请重试");
 			return SUCCESS;

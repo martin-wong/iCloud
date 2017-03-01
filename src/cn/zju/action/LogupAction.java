@@ -4,8 +4,11 @@ import java.io.File;
 import java.io.Serializable;
 
 import org.apache.struts2.ServletActionContext;
+import org.springframework.web.context.WebApplicationContext;
+import org.springframework.web.context.support.WebApplicationContextUtils;
 
 import cn.zju.dao.po.User;
+import cn.zju.service.FileService;
 import cn.zju.service.UserService;
 
 import com.opensymphony.xwork2.ActionSupport;
@@ -35,10 +38,8 @@ public class LogupAction extends ActionSupport implements Serializable{
 	
 	//当进行注册前，检查参数是否正确
 	public void validateLogup(){
-	    System.out.println(username);
-	    System.out.println(password);
-	    
-	    if("".equals(username) || "".equals(password)){
+
+		if("".equals(username) || "".equals(password)){
 			ServletActionContext.getRequest().setAttribute("usernameerror", "用户名必须6-20位");
 			ServletActionContext.getRequest().setAttribute("passworderror", "密码必须6-20位");
 		    addFieldError("", "");
@@ -53,11 +54,14 @@ public class LogupAction extends ActionSupport implements Serializable{
 	
 	public String logup(){
 		
-		User user = new User();
+		WebApplicationContext applicationContext = WebApplicationContextUtils.getWebApplicationContext(ServletActionContext.getRequest().getServletContext());
+		UserService service = (UserService) applicationContext.getBean("userService");
+		
+		User user = (User) applicationContext.getBean("user");
 		user.setUsername(username);
 		user.setPassword(password);
 		try {
-			UserService.createUser(user);
+			service.createUser(user); //如果用户已注册 下层的service会抛出异常
 			//注册成功，就在upload下分配一个私人的文件夹
 			String path = ServletActionContext.getServletContext().getRealPath("WEB-INF/upload");
 			File file = new File(path+File.separator+username);

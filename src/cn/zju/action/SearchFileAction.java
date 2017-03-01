@@ -4,6 +4,8 @@ import java.io.Serializable;
 import java.util.List;
 
 import org.apache.struts2.ServletActionContext;
+import org.springframework.web.context.WebApplicationContext;
+import org.springframework.web.context.support.WebApplicationContextUtils;
 
 import cn.zju.dao.po.File;
 import cn.zju.dao.po.PageBean;
@@ -71,18 +73,21 @@ public class SearchFileAction extends ActionSupport implements Serializable {
 	public String execute() throws Exception  {
 		
 		List<File> list;
+		WebApplicationContext applicationContext = WebApplicationContextUtils.getWebApplicationContext(ServletActionContext.getRequest().getServletContext());
+		FileService service = (FileService) applicationContext.getBean("fileService");
+		 
 		try {
-			list = FileService.getAllFiles(this);
+			list = service.getAllFiles(this);
 		} catch (Exception e) {
 			e.printStackTrace();
 			return INPUT;
 		} 
 		//拿到每页的数据，每个元素就是一条记录
-		PageBean pagebean = new PageBean();
+		PageBean pagebean = (PageBean) applicationContext.getBean("pageBean");
 		pagebean.setList(list);
 	    pagebean.setCurrentpage(currentpage);
 		pagebean.setPagesize(pagesize);
-		pagebean.setTotalrecord(FileService.countShareFiles(this));
+		pagebean.setTotalrecord(service.countShareFiles(this));
 		
 		ServletActionContext.getRequest().setAttribute("pagebean", pagebean);
 		ServletActionContext.getRequest().setAttribute("searchcontent", searchcontent);

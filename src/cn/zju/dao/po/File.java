@@ -2,6 +2,10 @@ package cn.zju.dao.po;
 
 import java.util.Date;
 
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
+
+@Component("file")
 public class File {
 	
 	private int id;
