@@ -6,6 +6,7 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 @Component("file")
+@Scope("prototype")
 public class File {
 	
 	private int id;

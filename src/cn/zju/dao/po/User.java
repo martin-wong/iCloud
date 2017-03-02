@@ -4,6 +4,7 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 @Component("user")
+@Scope("prototype")
 public class User  {
 	private int id;
 	private String password;

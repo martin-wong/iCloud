@@ -17,6 +17,16 @@ public class LogupAction extends ActionSupport implements Serializable{
 
 	private String username;
 	private String password;
+	private UserService service; 
+	private User user;
+	
+	public void setUser(User user) {
+		this.user = user;
+	}
+
+	public void setService(UserService service) {
+		this.service = service;
+	}
 	
 	public String getUsername() {
 		return username;
@@ -54,10 +64,6 @@ public class LogupAction extends ActionSupport implements Serializable{
 	
 	public String logup(){
 		
-		WebApplicationContext applicationContext = WebApplicationContextUtils.getWebApplicationContext(ServletActionContext.getRequest().getServletContext());
-		UserService service = (UserService) applicationContext.getBean("userService");
-		
-		User user = (User) applicationContext.getBean("user");
 		user.setUsername(username);
 		user.setPassword(password);
 		try {

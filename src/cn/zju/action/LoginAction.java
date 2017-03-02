@@ -3,12 +3,8 @@ package cn.zju.action;
 import java.io.Serializable;
 
 import org.apache.struts2.ServletActionContext;
-import org.springframework.web.context.WebApplicationContext;
-import org.springframework.web.context.support.WebApplicationContextUtils;
-
 import cn.zju.dao.po.User;
 import cn.zju.service.UserService;
-
 import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ActionSupport;
 
@@ -16,6 +12,16 @@ public class LoginAction extends ActionSupport implements Serializable{
 
 	private String username;
 	private String password;
+	private UserService service; 
+	private User user;
+	
+	public void setUser(User user) {
+		this.user = user;
+	}
+
+	public void setService(UserService service) {
+		this.service = service;
+	}
 
 	public String getUsername() {
 		return username;
@@ -41,9 +47,6 @@ public class LoginAction extends ActionSupport implements Serializable{
 	
 	public void validateLogin(){
 		
-		System.out.println(username);
-		System.out.println(password);
-		
 	    if("".equals(username) || "".equals(password)){
 			ServletActionContext.getRequest().setAttribute("error", "用户名或密码错误");
             addFieldError("", "");
@@ -52,12 +55,9 @@ public class LoginAction extends ActionSupport implements Serializable{
 	
 	public String login(){
 		
-		User user = new User();
 		user.setUsername(username);
 		user.setPassword(password);
 		try {
-			WebApplicationContext applicationContext = WebApplicationContextUtils.getWebApplicationContext(ServletActionContext.getRequest().getServletContext());
-			UserService service = (UserService) applicationContext.getBean("userService");
 			String user_name = service.checkUser(user);
 			if( user_name != null && (!"".equals(user_name)) ){
 				//如果登陆成功 把用户名放到session域

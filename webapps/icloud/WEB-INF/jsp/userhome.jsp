@@ -143,7 +143,7 @@
     	  var pagesize = document.getElementById("pagesize").value;
     	  
     	  if(pagesize > 10 || pagesize >= ${pagebean.totalrecord - pagebean.pagesize * ( pagebean.currentpage - 1 )}){
-    		  pagesize = Math.min(pagesize,${pagebean.totalrecord});
+    		  pagesize = Math.min(10,${pagebean.totalrecord});
     		  currentpage = 1 ;
     	  }else if(pagesize < 1){
     		  pagesize = 1;

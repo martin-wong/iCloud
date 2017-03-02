@@ -16,17 +16,32 @@ import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ActionSupport;
 
 public class UploadAction extends ActionSupport implements Serializable{
-
 	
 	private String username;
+	
 	private File file;  //对应的就是表单中文件上传的那个输入域的名称，Struts2框架会封装成File类型的
 	private String fileFileName;//   上传输入域+FileName  文件名  JavaWeb.pdf
 	private String fileContentType;// 上传文件的MIME类型  application/pdf
 
+	private static final String storePath = "D:"+File.separator+"upload"; //存储目录 D:\\upload
 	private static final int normallimit = 20*1000*1000; //普通用户上传单个文件的最大体积 20mb
 	private static final int viplimit = 50*1000*1000; //普通用户上传单个文件的最大体积 50mb
-	
 	private static final int factor = 1000000;  //Mb到字节的转换因子
+	
+	private FileService fileService; 
+	private UserService userService; 
+	
+	private cn.zju.dao.po.File f ;
+	
+	public void setF(cn.zju.dao.po.File f) {
+		this.f = f;
+	}
+	public void setFileService(FileService fileService) {
+		this.fileService = fileService;
+	}
+	public void setUserService(UserService userService) {
+		this.userService = userService;
+	}
 	
 	public String getUsername() {
 		return username;
@@ -62,19 +77,15 @@ public class UploadAction extends ActionSupport implements Serializable{
 
 	public String upload(){
 		
-		
 		//session域存的username和传进来的username一致，说明用户名没有造假
 		String user_name = (String) ActionContext.getContext().getSession().get("user_name");
 		if(user_name == null || "".equals(user_name) || !user_name.equals(this.username))
 			 return SUCCESS;
 		
 		//从数据库查询该用户是否为vip 
-		WebApplicationContext applicationContext = WebApplicationContextUtils.getWebApplicationContext(ServletActionContext.getRequest().getServletContext());
-		UserService service = (UserService) applicationContext.getBean("userService");
-	    
 		Integer isvip = null;
 		try {
-			isvip = service.isVip(user_name);
+			isvip = userService.isVip(user_name);
 			//把是否是vip的信息带到userhome主页，用于在客户端限制文件上传大小
 			ServletActionContext.getRequest().setAttribute("isvip", isvip);
 		} catch (Exception e) {
@@ -83,10 +94,7 @@ public class UploadAction extends ActionSupport implements Serializable{
 			return SUCCESS;
 		}  
 		
-		String storePath = null;
 		File store = null;  //目的文件
-		storePath = "D:"+File.separator+"upload"; //存储目录 D:\\upload
-		
 	   	try{
     		//存在每个用户有一个自己名字命名的文件夹
     		 store = new File(storePath+File.separator+username,fileFileName);
@@ -105,12 +113,10 @@ public class UploadAction extends ActionSupport implements Serializable{
 		
 		
 		//验证全部通过，把文件复制到本地硬盘的用户的目录下
-		FileService fileService = (FileService) applicationContext.getBean("fileService");
 		Integer fileid = null;
 		try {
 			FileUtils.copyFile(file,store);   //上传文件到本地硬盘
 			//把文件信息存入数据库
-			cn.zju.dao.po.File f = (cn.zju.dao.po.File) applicationContext.getBean("file");
 			f.setCreatetime(new java.util.Date());
 			f.setFilename(fileFileName);
 			f.setFilepath(username);

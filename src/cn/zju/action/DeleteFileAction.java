@@ -18,7 +18,11 @@ public class DeleteFileAction extends ActionSupport implements Serializable{
 	private int pagesize;
 	private int startindex;
 	private int id; //文件id
-	
+	private FileService service; 
+
+	public void setService(FileService service) {
+		this.service = service;
+	}
 	
 	public int getStartindex() {
 		return startindex;
@@ -58,8 +62,6 @@ public class DeleteFileAction extends ActionSupport implements Serializable{
 	   
 	   //判断该用户是否拥有此文件
 	   try{
-		    WebApplicationContext applicationContext = WebApplicationContextUtils.getWebApplicationContext(ServletActionContext.getRequest().getServletContext());
-			FileService service = (FileService) applicationContext.getBean("fileService");
 		   String username = service.findFilepathById(id);
 		   String login_user = (String) ActionContext.getContext().getSession().get("user_name");
 		   String filename = service.findFilenameById(id); //查出文件名

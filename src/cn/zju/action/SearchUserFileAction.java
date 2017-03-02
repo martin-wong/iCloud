@@ -23,8 +23,20 @@ public class SearchUserFileAction extends ActionSupport implements Serializable{
 	
 	private String filepath; //file表的文件路径就是所属的用户的用户名
 	
+	private PageBean pageBean;
 	
+	private FileService fileService; 
+	private UserService userService; 
 	
+	public void setPageBean(PageBean pageBean) {
+		this.pageBean = pageBean;
+	}
+	public void setFileService(FileService fileService) {
+		this.fileService = fileService;
+	}
+	public void setUserService(UserService userService) {
+		this.userService = userService;
+	}
 	public String getFilepath() {
 		return filepath;
 	}
@@ -60,10 +72,6 @@ public class SearchUserFileAction extends ActionSupport implements Serializable{
 	@Override
 	public String execute() throws Exception  {
 		//根据用户查找出它所有的文件
-		WebApplicationContext applicationContext = WebApplicationContextUtils.getWebApplicationContext(ServletActionContext.getRequest().getServletContext());
-		FileService fileService = (FileService) applicationContext.getBean("fileService");
-		UserService userService = (UserService) applicationContext.getBean("userService");
-		
 		List<File> list;
 		try {
 			String username = (String) ActionContext.getContext().getSession().get("user_name");
@@ -83,13 +91,13 @@ public class SearchUserFileAction extends ActionSupport implements Serializable{
            ServletActionContext.getRequest().setAttribute("isvip", isvip);   
 		}
 		//拿到每页的数据，每个元素就是一条记录
-		PageBean pagebean = (PageBean) applicationContext.getBean("pageBean");
-		pagebean.setList(list);
-	    pagebean.setCurrentpage(currentpage);
-		pagebean.setPagesize(pagesize);
-		pagebean.setTotalrecord(fileService.countUserFiles(this));
+		PageBean pagebean = new PageBean();
+		pageBean.setList(list);
+		pageBean.setCurrentpage(currentpage);
+	    pageBean.setPagesize(pagesize);
+		pageBean.setTotalrecord(fileService.countUserFiles(this));
 		
-		ServletActionContext.getRequest().setAttribute("pagebean", pagebean);
+		ServletActionContext.getRequest().setAttribute("pagebean", pageBean);
 		
 		return SUCCESS;
 	}

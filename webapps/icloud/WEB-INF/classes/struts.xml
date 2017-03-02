@@ -3,6 +3,9 @@
             "-//Apache Software Foundation//DTD Struts Configuration 2.1.7//EN"
             "http://struts.apache.org/dtds/struts-2.1.7.dtd">
 <struts>
+    <!-- action中使用的service将由spring自动按类型注入 -->
+    <constant name="struts.objectFactory.spring.autoWire" value="type"></constant>
+    
     <constant name="struts.devMode" value="true"></constant>
     <constant name="struts.multipart.maxSize" value="10000000000000"></constant>
     

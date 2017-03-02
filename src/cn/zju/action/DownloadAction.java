@@ -20,6 +20,11 @@ public class DownloadAction extends ActionSupport implements Serializable{
 	
 	private int id;
 	private String filename;
+	private FileService service; 
+
+	public void setService(FileService service) {
+		this.service = service;
+	}
 	
 	public String getFilename() {
 		return filename;
@@ -47,9 +52,6 @@ public class DownloadAction extends ActionSupport implements Serializable{
 		
 		FileInputStream in = null ;
 		try {
-			WebApplicationContext applicationContext = WebApplicationContextUtils.getWebApplicationContext(ServletActionContext.getRequest().getServletContext());
-			FileService service = (FileService) applicationContext.getBean("fileService");
-			   
 			String path = service.findFilepathById(id); //相对于/upload的路径
 			if(path==null || "".equals(path)){
 			    ServletActionContext.getRequest().setAttribute("message", "对不起，您要下载的资源已被删除");
@@ -57,8 +59,6 @@ public class DownloadAction extends ActionSupport implements Serializable{
 			}
 			path = "D:"+File.separator+"upload"+File.separator+path;
 			
-		    System.out.println(path);
-		    
 		    File file = new File(path+File.separator+filename);
 			//通知浏览器以下载方式打开
 			ServletActionContext.getResponse().setHeader("content-disposition", "attachment;filename=" + URLEncoder.encode(filename,"UTF-8"));

@@ -44,8 +44,6 @@ public class AutoLoginAction extends ActionSupport implements Serializable {
 	
 	public String autoLogin(){
 		
-		
-		
 		return SUCCESS;
 		
 	}

@@ -19,6 +19,11 @@ public class ChangeFileStatusAction extends ActionSupport implements Serializabl
 	private int startindex;
 	private int id; //文件id
 	private int canshare; //1 共享    0 私有
+	private FileService service; 
+
+	public void setService(FileService service) {
+		this.service = service;
+	}
 	
 	
 	public int getStartindex() {
@@ -66,8 +71,6 @@ public class ChangeFileStatusAction extends ActionSupport implements Serializabl
 		
 		//把canshare修改进数据库
 		try {
-			WebApplicationContext applicationContext = WebApplicationContextUtils.getWebApplicationContext(ServletActionContext.getRequest().getServletContext());
-			FileService service = (FileService) applicationContext.getBean("fileService");
 			//检查该文件是否属于该用户,否则不允许修改文件状态
 			String username = service.findFilepathById(id);
 			String login_user = (String) ActionContext.getContext().getSession().get("user_name");
