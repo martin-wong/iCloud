@@ -2,16 +2,13 @@ package cn.zju.action;
 
 import java.io.Serializable;
 import java.util.List;
-
 import org.apache.struts2.ServletActionContext;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
-
 import cn.zju.dao.po.File;
 import cn.zju.dao.po.PageBean;
 import cn.zju.service.FileService;
 import cn.zju.service.UserService;
-
 import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ActionSupport;
 
@@ -91,7 +88,6 @@ public class SearchUserFileAction extends ActionSupport implements Serializable{
            ServletActionContext.getRequest().setAttribute("isvip", isvip);   
 		}
 		//拿到每页的数据，每个元素就是一条记录
-		PageBean pagebean = new PageBean();
 		pageBean.setList(list);
 		pageBean.setCurrentpage(currentpage);
 	    pageBean.setPagesize(pagesize);
